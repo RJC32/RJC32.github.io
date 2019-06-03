@@ -30,9 +30,10 @@
       "esri/widgets/Expand",
       "esri/widgets/Search",
       "esri/layers/FeatureLayer",
+      "esri/widgets/Compass",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, Home, Locate, LayerList, Expand, Search, FeatureLayer) {
+    ], function(Map, MapView, Layer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass) {
 
       var map = new Map({
         basemap: "streets-navigation-vector"
@@ -228,7 +229,7 @@
             zoomScale: 3200,
             resultSymbol: {
                type: "simple-marker",  // autocasts as new PictureMarkerSymbol()
-               size: 32,
+               size: 50,
             },
           }]
         });
