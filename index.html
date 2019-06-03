@@ -30,11 +30,10 @@
       "esri/widgets/Expand",
       "esri/widgets/Search",
       "esri/layers/FeatureLayer",
-      "esri/widgets/Fullscreen",
       "esri/widgets/Compass",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Fullscreen, Compass) {
+    ], function(Map, MapView, Layer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass) {
 
       var map = new Map({
         basemap: "streets-navigation-vector"
@@ -208,10 +207,6 @@
           }
         });
 
-        fullscreen = new Fullscreen({
-          view: view
-        });
-
         var compassWidget = new Compass({
           view: view
         });
@@ -242,7 +237,6 @@
         view.ui.add(homeBtn, "top-left");
         view.ui.add(locateBtn, "top-left");
         view.ui.add(bgExpand, "top-left");
-        view.ui.add(fullscreen, "bottom-left");
         view.ui.add(compassWidget, "bottom-left");
         view.ui.add(searchWidget, "top-right");
 
