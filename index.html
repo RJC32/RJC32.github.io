@@ -1,0 +1,255 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <title>Number 2</title>
+
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.8/"></script>
+
+  <script>
+    require([
+
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/Layer",
+      "esri/widgets/Home",
+      "esri/widgets/Locate",
+      "esri/widgets/LayerList",
+      "esri/widgets/Expand",
+      "esri/widgets/Search",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Fullscreen",
+      "esri/widgets/Compass",
+      "dojo/domReady!",
+
+    ], function(Map, MapView, Layer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Fullscreen, Compass) {
+
+      var map = new Map({
+        basemap: "streets-navigation-vector"
+      });
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [175.2, -41.1],
+        scale: 1000000,
+        constraints: {
+          minZoom: 8,
+          maxZoom: 18,
+          snapToZoom: true,
+          rotationEnabled: true,
+        },
+      });
+
+      function addLayer(layerItemPromise, index) {
+        return layerItemPromise.then(function(layer){
+          map.add(layer, index);
+        });
+      }
+
+      // OpeningHours
+      var OpeningHours = Layer.fromPortalItem({
+        portalItem: {
+          id: "3cad874484c24ae4ac7b11d4b785955c"
+        }
+      });
+
+      // Beef
+      var Beef = Layer.fromPortalItem({
+        portalItem: {
+          id: "0a19b6d0bab3443aa055250c0a4322a0"
+        }
+      });
+
+      // Chicken
+      var Chicken = Layer.fromPortalItem({
+        portalItem: {
+          id: "dbf5b0327a4c414891d02bb6054377ff"
+        }
+      });
+
+      // Lamb
+      var Lamb = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "c0c83e64e98443f88da63d419d70ceab"
+        }
+      });
+
+      // Pork
+      var Pork = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "279ca2879f4d4da0a0e17c5e84d6f780"
+        }
+      });
+
+      // Seafood
+      var Seafood = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "f2cdcb8376704edcb0bc07a3d06fa63c"
+        }
+      });
+
+      // Sweet
+      var Sweet = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "a5043c6094b14ecf8d7dce624468c355"
+        }
+      });
+
+      // Vegetarian
+      var Vegetarian = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "eeea67bf21cd4596b93c0a97ae27521b"
+        }
+      });
+
+      // Venison
+      var Venison = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "8b755fcddc924d138c4e69cc2a89d225"
+        }
+      });
+
+      // Other
+      var Other = Layer.fromPortalItem({
+        portalItem: {  // autocasts new PortalItem()
+          id: "4e44bb4f04274faa8f6c7b682194bf38"
+        }
+      });
+
+      addLayer(OpeningHours, 0)
+        .then(addLayer(Beef, 9))
+        .then(addLayer(Chicken, 8))
+        .then(addLayer(Lamb, 7))
+        .then(addLayer(Pork, 6))
+        .then(addLayer(Seafood, 5))
+        .then(addLayer(Sweet, 4))
+        .then(addLayer(Vegetarian, 3))
+        .then(addLayer(Venison, 2))
+        .then(addLayer(Other, 1))
+
+        view.when(function() {
+          limitMapExtent(view);
+        });
+
+        function limitMapExtent(view) {
+          var initialExtent = view.extent;
+          view.watch('stationary', function(event) {
+            if (!event) {
+              return;
+            }
+            //If the map has moved to the point where it's center is
+            //outside the initial boundaries, then move it back to the
+            //edge where it moved out
+            var currentCenter = view.extent.center;
+            if (!initialExtent.contains(currentCenter)) {
+
+              var newCenter = view.extent.center;
+
+              //check each side of the initial extent and if the
+              //current center is outside that extent,
+              //set the new center to be on the edge that it went out on
+              if (currentCenter.x < initialExtent.xmin) {
+                newCenter.x = initialExtent.xmin;
+              }
+              if (currentCenter.x > initialExtent.xmax) {
+                newCenter.x = initialExtent.xmax;
+              }
+              if (currentCenter.y < initialExtent.ymin) {
+                newCenter.y = initialExtent.ymin;
+              }
+              if (currentCenter.y > initialExtent.ymax) {
+                newCenter.y = initialExtent.ymax;
+              }
+              view.goTo(newCenter);
+            }
+          });
+        }
+
+
+        // Create widgets
+
+        var homeBtn = new Home({
+          view: view
+        });
+
+        var locateBtn = new Locate({
+          view: view
+        });
+
+        var layerList = new LayerList({
+          view: view
+        });
+
+        var bgExpand = new Expand({
+          view: view,
+          content: layerList
+        });
+
+        layerList.watch("activeLayer", function() {
+          var mobileSize =
+            view.heightBreakpoint === "xsmall" ||
+            view.widthBreakpoint === "xsmall";
+
+          if (mobileSize) {
+            bgExpand.collapse();
+          }
+        });
+
+        fullscreen = new Fullscreen({
+          view: view
+        });
+
+        var compassWidget = new Compass({
+          view: view
+        });
+
+        var searchWidget = new Search({
+          view: view,
+            popupOpenOnSelect: false,
+            popupEnabled: false,
+            locationEnabled: false,
+            includeDefaultSources: false,
+            sources: [{
+              featureLayer: {url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/AllLocations/FeatureServer/1"
+            },
+            searchFields: ["Burger", "Restaurant"],
+            suggestionTemplate: "{Restaurant}, {Burger}",
+            placeholder: "Placeholder",
+            outFields: ["*"],
+            suggestionsEnabled: true,
+            exactMatch: false,
+            zoomScale: 3200,
+            resultSymbol: {
+               type: "simple-marker",  // autocasts as new PictureMarkerSymbol()
+               size: 32,
+            },
+          }]
+        });
+
+        view.ui.add(homeBtn, "top-left");
+        view.ui.add(locateBtn, "top-left");
+        view.ui.add(bgExpand, "top-left");
+        view.ui.add(fullscreen, "bottom-left");
+        view.ui.add(compassWidget, "bottom-left");
+        view.ui.add(searchWidget, "top-right");
+
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
