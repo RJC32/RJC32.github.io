@@ -47,7 +47,7 @@
           minZoom: 8,
           maxZoom: 18,
           snapToZoom: true,
-          rotationEnabled: false,
+          rotationEnabled: true,
         },
       });
 
@@ -206,6 +206,10 @@
           }
         });
 
+        var compassWidget = new Compass({
+          view: view
+        });
+
         var searchWidget = new Search({
           view: view,
             popupOpenOnSelect: false,
@@ -232,6 +236,7 @@
         view.ui.add(homeBtn, "top-left");
         view.ui.add(locateBtn, "top-left");
         view.ui.add(bgExpand, "top-left");
+        view.ui.add(compassWidget, "bottom-left");
         view.ui.add(searchWidget, "top-right");
 
     });
