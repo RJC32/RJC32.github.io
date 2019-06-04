@@ -44,6 +44,13 @@
         map: map,
         center: [175.2, -41.1],
         scale: 1000000,
+        popup: {
+          dockEnabled: true,
+          dockOptions: {
+            buttonEnabled: false,
+            breakpoint: false,
+          }
+        },
         constraints: {
           minZoom: 8,
           maxZoom: 18,
@@ -229,7 +236,8 @@
             zoomScale: 3200,
             resultSymbol: {
                type: "simple-marker",  // autocasts as new PictureMarkerSymbol()
-               size: 50,
+               size: 28,
+               outline: { width: 3.5, color: [50, 50, 50, 1] }
             },
           }]
         });
