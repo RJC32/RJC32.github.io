@@ -363,7 +363,6 @@
     }
     return status
   </script>
-
   <script type="text/plain" id="todays-hours-arcade">
     var cYear = Year(Now())
     var cMonth = Month(Now())
@@ -480,7 +479,6 @@
 
     return status
   </script>
-
   <script type="text/plain" id="tomorrows-hours-arcade">
     var cYear = Year(Now())
     var cMonth = Month(Now())
@@ -600,7 +598,6 @@
     return TT
 
   </script>
-
   <script type="text/plain" id="beer-match-arcade">
 
     if ($feature["Price_with_Beer"] == Null){
@@ -612,14 +609,31 @@
 
   </script>
 
-  <script type="text/plain" id="fries-arcade">
+  <script type="text/plain" id="overall-review">
 
-    var test = $feature["Fries"] + "__test"
-    return test;
+    var reviews = FeatureSetByName($map,"Review");
+    var restaurants = Buffer($feature, 10, 'meters')
+
+    var allReviews = Intersects(reviews, restaurants);
+
+    var total = 0
+    var loop = 0
+
+    for (var review in allReviews){
+        total += Number(review.Burger);
+        loop += 1
+    }
+
+
+    if (loop > 3){
+    	var score = Round((total / loop),2);
+    } else {
+    	var score = "Not Enough Reviews";
+    }
+
+    return score
 
   </script>
-
-
 
   <script>
     require([
@@ -681,6 +695,11 @@
           name: "beer-match-arcade",
           title: "Beer Match",
           expression: document.getElementById("beer-match-arcade").text
+        },
+        {
+          name: "overall-review",
+          title: "Overall Review",
+          expression: document.getElementById("overall-review").text
         },
       ];
 
@@ -780,6 +799,16 @@
       };
 
 
+      // Reviews
+      var reviews = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/survey123_25db605e5a174932b7745e02705e9691/FeatureServer/",
+        layerId: 0,
+        popupEnabled: false,
+        listMode: "hide",
+        visible : false,
+        title: "Review"
+      });
+
       // Beef
       var beefHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Beef/FeatureServer",
@@ -802,10 +831,60 @@
       var beefGroup = new GroupLayer({
         layers: [beefLocation, beefHours],
         title: "Beef",
-        //listMode: "hide-children"
+        listMode: "hide-children"
       });
 
-      // Beef
+      // Chicken
+      var chickenHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Chicken/FeatureServer",
+        definitionExpression: "Burger_Protien = 'Chicken'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var chickenLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Chicken/FeatureServer",
+        definitionExpression: "Burger_Protien = 'Chicken'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Chicken",
+        popupTemplate: popupTemplate,
+      });
+
+      var chickenGroup = new GroupLayer({
+        layers: [chickenLocation, chickenHours],
+        title: "Chicken",
+        listMode: "hide-children"
+      });
+      // Duck
+      var duckHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
+        definitionExpression: "Burger_Protien = 'Duck'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var duckLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
+        definitionExpression: "Burger_Protien = 'Duck'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Duck",
+        popupTemplate: popupTemplate,
+      });
+
+      var duckGroup = new GroupLayer({
+        layers: [duckLocation, duckHours],
+        title: "Duck",
+        listMode: "hide-children"
+      });
+
+
+      // Vege
       var vegeHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Vegetarian/FeatureServer",
         definitionExpression: "Burger_Protien = 'Vegetarian'",
@@ -827,13 +906,13 @@
       var vegeGroup = new GroupLayer({
         layers: [vegeLocation, vegeHours],
         title: "Vegetarian",
-        //listMode: "hide-children"
+        listMode: "hide-children"
       });
 
 
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [beefGroup, vegeGroup]
+        layers: [reviews, vegeGroup, duckGroup, chickenGroup, beefGroup]
       });
 
       var view = new MapView({
@@ -897,7 +976,7 @@
           type: "simple-marker", // autocasts as new SimpleFillSymbol()
           color: color,
           outline: {
-            width: 1.8,
+            width: 1.5,
             color: [0, 0, 0, 1]
           },
           xoffset: 12,
