@@ -608,10 +608,23 @@
     return PB;
 
   </script>
+  <script type="text/plain" id="survey-arcade">
 
-  <script type="text/plain" id="overall-review">
+    var http = "https://"
+    var share = "survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?hide=field:location,field:actual"
+    var actual = "&field:actual=" + Replace($feature["Restaurant"], ' ', '%20')
+    var restaurant = "&field:restaurant=" + Replace($feature["Restaurant"], ' ', '%20')
+    var burger = "&field:burger=" + Replace($feature["Burger"], ' ', '%20')
+    var center = "&center=" + $feature["Latitude"] + "," + $feature["Longitude"]
 
-    var reviews = FeatureSetByName($map,"Review");
+    var Survey = Concatenate([http,share,actual,restaurant,burger,center])
+    return Survey;
+
+  </script>
+
+  <script type="text/plain" id="overall-arcade">
+
+    var reviews = FeatureSetByName($map,"Reviews");
     var restaurants = Buffer($feature, 10, 'meters')
 
     var allReviews = Intersects(reviews, restaurants);
@@ -649,11 +662,11 @@
       "esri/widgets/Search",
       "esri/layers/FeatureLayer",
       "esri/widgets/Compass",
+      "esri/core/watchUtils",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass, watchUtils) {
 
-      var openTest = document.getElementById("thursday-arcade").text;
 
       var date = new Date();
       var day = date.getDay();
@@ -697,9 +710,14 @@
           expression: document.getElementById("beer-match-arcade").text
         },
         {
-          name: "overall-review",
-          title: "Overall Review",
-          expression: document.getElementById("overall-review").text
+          name: "survey-arcade",
+          title: "Survey Arcade",
+          expression: document.getElementById("survey-arcade").text
+        },
+        {
+          name: "overall-arcade",
+          title: "Overall Arcade",
+          expression: document.getElementById("overall-arcade").text
         },
       ];
 
@@ -726,7 +744,7 @@
             type: "fields",
             fieldInfos: [
               {
-                fieldName: "expression/overall-arcade",
+                fieldName: "{expression/overall-arcade}",
                 label: "Overall Review"
               },
               {
@@ -753,7 +771,7 @@
           },
           {
             type: "text",
-            text: "<a href=https://survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?hide=field:location,field:actual&field:actual=%7BRestaurant%7D&field:restaurant=%7BRestaurant%7D&field:burger=%7BBurger%7D&center=%7BLatitude%7D,%7BLongitude%7D>Submit a Review</a>"
+            text: "<a href={expression/survey-arcade}>Submit a Review</a>"
           },
           {
             type: "text",
@@ -764,9 +782,19 @@
           {
             type: "text",
             text: "<a href={Website}>Wellington on a Plate Website</a>" + "<br>" +
-                  "<a href={Instagram}>{Restaurant} Instagram Location</a>" + "<br>" +
-                  "<a href={Picture}>Picture of the Burger</a>"
+                  "<a href={Instagram}>{Restaurant} Instagram Location</a>"
           },
+          {
+            type: "media",
+            mediaInfos: [
+              {
+                type: "image",
+                value: {
+                  sourceURL: "{Picture}"
+                }
+              }
+            ]
+          }
         ],
         expressionInfos: arcadeExpressionInfos
       };
@@ -798,20 +826,25 @@
           }]
       };
 
+      var symbol = {
+          type: "simple-marker",
+          color: "#ffff00",
+        };
 
       // Reviews
       var reviews = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/survey123_25db605e5a174932b7745e02705e9691/FeatureServer/",
         layerId: 0,
-        popupEnabled: false,
-        listMode: "hide",
-        visible : false,
+        //popupEnabled: false,
+        //listMode: "hide",
+        //visible : false,
         title: "Review"
       });
 
       // Beef
       var beefHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Beef/FeatureServer",
+        //id: "Symbol",
         definitionExpression: "Burger_Protien = 'Beef'",
         layerId: 1,
         popupEnabled: false,
@@ -821,11 +854,22 @@
 
       var beefLocation = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Beef/FeatureServer",
+        id: "Symbol",
         definitionExpression: "Burger_Protien = 'Beef'",
         layerId: 2,
         outFields: ["*"],
         title: "Beef",
         popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Beef.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
       });
 
       var beefGroup = new GroupLayer({
@@ -837,6 +881,7 @@
       // Chicken
       var chickenHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Chicken/FeatureServer",
+        //id: "Symbol",
         definitionExpression: "Burger_Protien = 'Chicken'",
         layerId: 1,
         popupEnabled: false,
@@ -846,11 +891,22 @@
 
       var chickenLocation = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Chicken/FeatureServer",
+        id: "Symbol",
         definitionExpression: "Burger_Protien = 'Chicken'",
         layerId: 2,
         outFields: ["*"],
         title: "Chicken",
         popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Chicken.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
       });
 
       var chickenGroup = new GroupLayer({
@@ -861,6 +917,7 @@
       // Duck
       var duckHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
+        //id: "Symbol",
         definitionExpression: "Burger_Protien = 'Duck'",
         layerId: 1,
         popupEnabled: false,
@@ -870,11 +927,22 @@
 
       var duckLocation = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
+        id: "Symbol",
         definitionExpression: "Burger_Protien = 'Duck'",
         layerId: 2,
         outFields: ["*"],
         title: "Duck",
         popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Duck.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
       });
 
       var duckGroup = new GroupLayer({
@@ -887,6 +955,7 @@
       // Vege
       var vegeHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Vegetarian/FeatureServer",
+        //id: "Symbol",
         definitionExpression: "Burger_Protien = 'Vegetarian'",
         layerId: 1,
         popupEnabled: false,
@@ -896,19 +965,29 @@
 
       var vegeLocation = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Vegetarian/FeatureServer",
+        id: "Symbol",
         definitionExpression: "Burger_Protien = 'Vegetarian'",
         layerId: 2,
         outFields: ["*"],
         title: "Vegetarian",
         popupTemplate: popupTemplate,
-      });
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Vege.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+        });
 
       var vegeGroup = new GroupLayer({
         layers: [vegeLocation, vegeHours],
         title: "Vegetarian",
         listMode: "hide-children"
       });
-
 
       var map = new Map({
         basemap: "streets-navigation-vector",
@@ -920,6 +999,7 @@
         map: map,
         center: [175.2, -41.1],
         scale: 1000000,
+        rotation: 0,
         popup: {
           dockEnabled: true,
           dockOptions: {
@@ -931,9 +1011,38 @@
           minZoom: 8,
           maxZoom: 18,
           snapToZoom: true,
-          rotationEnabled: false,
+          rotationEnabled: true,
         },
       });
+
+      function getRotate() {
+        watchUtils.whenTrue(view, "stationary", function() {
+          var roti = 0;
+          if (view.rotation) {
+            roti = view.rotation;
+          } else {
+            roti = 0;
+          }
+          console.log("A "+ roti)
+          roti = 360 - roti;
+          console.log("B "+ roti)
+          for (var i = 0; i < map.allLayers.items.length; i++) {
+             var l = map.allLayers.items[i];
+             console.log(l)
+             //console.log(map.allLayers.items[i]);
+             if(l){
+               if(l.id ==='Symbol')
+               {
+                 l.renderer.symbol.angle =  roti;
+                 //console.log(l)
+                 //console.log(l.renderer.uniqueValueInfos)//.uniqueValueInfos.symbol.angle = roti;
+               }
+             }
+        }
+      });
+    }
+
+      getRotate();
 
       view.when(function() {
           limitMapExtent(view);
@@ -980,7 +1089,8 @@
             color: [0, 0, 0, 1]
           },
           xoffset: 12,
-          yoffset: 12
+          yoffset: 12,
+          angle: 0
         };
       }
 
