@@ -1160,7 +1160,7 @@
 
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [reviews, /*otherGroup, vegeGroup, sweetGroup, seafoodGroup, porkGroup, lambGroup, duckGroup, chickenGroup,8*/ beefGroup]
+        layers: [reviews, otherGroup, vegeGroup, sweetGroup, seafoodGroup, porkGroup, lambGroup, duckGroup, chickenGroup, beefGroup]
       });
 
       var view = new MapView({
@@ -1180,13 +1180,25 @@
           minZoom: 8,
           maxZoom: 18,
           snapToZoom: true,
-          rotationEnabled: false,
+          rotationEnabled: true,
         },
       });
 
       view.when(function() {
           limitMapExtent(view);
         });
+
+      function getRotate() {
+        watchUtils.whenTrue(view, "stationary", function() {
+          var roti = 0;
+          if (view.rotation) {
+            alert("Unfortunately rotating this map will cause issues.\nPlease refrain from rotating this map.\nThank you for understanding!");
+            view.rotation = 0
+          }
+        })
+      }
+
+      getRotate();
 
       function limitMapExtent(view) {
           var initialExtent = view.extent;
@@ -1241,7 +1253,8 @@
       });
 
       var locateBtn = new Locate({
-        view: view
+        view: view,
+        useHeadingEnabled: false
       });
 
       var layerList = new LayerList({
