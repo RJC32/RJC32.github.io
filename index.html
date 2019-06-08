@@ -862,7 +862,7 @@
 
       var beefGroup = new GroupLayer({
         layers: [beefLocation, beefHours],
-        title: "Beef Group",
+        title: "Beef",
         listMode: "hide-children"
       });
 
@@ -902,6 +902,7 @@
         title: "Chicken",
         listMode: "hide-children"
       });
+
       // Duck
       var duckHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
@@ -936,6 +937,155 @@
       var duckGroup = new GroupLayer({
         layers: [duckLocation, duckHours],
         title: "Duck",
+        listMode: "hide-children"
+      });
+
+      // Lamb
+      var lambHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Lamb/FeatureServer",
+        id: "Icon",
+        definitionExpression: "Burger_Protien = 'Lamb'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var lambLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Lamb/FeatureServer",
+        id: "Symbol",
+        definitionExpression: "Burger_Protien = 'Lamb'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Lamb",
+        popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Lamb.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+      });
+
+      var lambGroup = new GroupLayer({
+        layers: [lambLocation, lambHours],
+        title: "Lamb",
+        listMode: "hide-children"
+      });
+
+      // Pork
+      var porkHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Pork/FeatureServer",
+        id: "Icon",
+        definitionExpression: "Burger_Protien = 'Pork'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var porkLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Pork/FeatureServer",
+        id: "Symbol",
+        definitionExpression: "Burger_Protien = 'Pork'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Pork",
+        popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Pork.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+      });
+
+      var porkGroup = new GroupLayer({
+        layers: [porkLocation, porkHours],
+        title: "Pork",
+        listMode: "hide-children"
+      });
+
+      // Seafood
+      var seafoodHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Seafood/FeatureServer",
+        id: "Icon",
+        definitionExpression: "Burger_Protien = 'Seafood'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var seafoodLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Seafood/FeatureServer",
+        id: "Symbol",
+        definitionExpression: "Burger_Protien = 'Seafood'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Seafood",
+        popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Fish.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+      });
+
+      var seafoodGroup = new GroupLayer({
+        layers: [seafoodLocation, seafoodHours],
+        title: "Seafood",
+        listMode: "hide-children"
+      });
+
+
+      // Sweet
+      var sweetHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Sweet/FeatureServer",
+        id: "Icon",
+        definitionExpression: "Burger_Protien = 'Sweet'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var sweetLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Sweet/FeatureServer",
+        id: "Symbol",
+        definitionExpression: "Burger_Protien = 'Sweet'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Sweet",
+        popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Sweet.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+      });
+
+      var sweetGroup = new GroupLayer({
+        layers: [sweetLocation, sweetHours],
+        title: "Sweet",
         listMode: "hide-children"
       });
 
@@ -977,9 +1127,48 @@
         listMode: "hide-children"
       });
 
+      // Other
+      var otherHours = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Other/FeatureServer",
+        id: "Icon",
+        definitionExpression: "Burger_Protien = 'Other'",
+        layerId: 1,
+        popupEnabled: false,
+        renderer: rendererTemplate,
+        title: "Hours"
+      });
+
+      var otherLocation = new FeatureLayer({
+        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Other/FeatureServer",
+        id: "Symbol",
+        definitionExpression: "Burger_Protien = 'Other'",
+        layerId: 2,
+        outFields: ["*"],
+        title: "Other",
+        popupTemplate: popupTemplate,
+        renderer: {
+          type: "simple",  // autocasts as new SimpleRenderer()
+          symbol: {
+            type: "picture-marker",
+            url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Other.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+            height: "50px",
+            width: "50px",
+            angle: 0,
+            }
+          }
+      });
+
+      var otherGroup = new GroupLayer({
+        layers: [otherLocation, otherHours],
+        title: "Other",
+        listMode: "hide-children"
+      });
+
+
+
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [reviews, vegeGroup, duckGroup, chickenGroup, beefGroup]
+        layers: [reviews, otherGroup, vegeGroup, sweetGroup, seafoodGroup, porkGroup, lambGroup, duckGroup, chickenGroup, beefGroup]
       });
 
       var view = new MapView({
@@ -1021,15 +1210,11 @@
                  l.renderer.symbol.angle =  rotation;
 
                } else if(l.id ==='Icon') {
-
-                 console.log(l)
-
                    for (var n = 0; n < l.renderer.uniqueValueInfos.length; n++) {
                      var k = l.renderer.uniqueValueInfos[n];
 
                      if(k){
                        k.symbol.angle = rotation;
-                       console.log(k.symbol.angle)
                      }
                    };
                }
