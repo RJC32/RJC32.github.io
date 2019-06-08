@@ -663,9 +663,10 @@
       "esri/layers/FeatureLayer",
       "esri/widgets/Compass",
       "esri/core/watchUtils",
+      "esri/symbols/PictureMarkerSymbol",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass, watchUtils) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass, watchUtils, PictureMarkerSymbol) {
 
 
       var date = new Date();
@@ -786,22 +787,29 @@
         uniqueValueInfos: [
           {
             value: "Open",
-            symbol: createSymbol("#8EC63F"),
+            type: "simple",
+            symbol: {
+              type: "picture-marker",
+              url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Open.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
+              height: "50px",
+              width: "50px",
+              angle: 0,
+            },
             label: "Open"
           },
           {
             value: "Closed",
-            symbol: createSymbol("#F05342"),
+            symbol: createSymbol("https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Closed.png?raw=true"),
             label: "Closed"
           },
           {
             value: "Unknown",
-            symbol: createSymbol("#C1C1C1"),
+            symbol: createSymbol("https://github.com/RJC32/RJC32.github.io/blob/master/icons/icons_Unknown.png?raw=true"),
             label: "Unknown"
           },
           {
             value: "Soon",
-            symbol: createSymbol("#F89E36"),
+            symbol: createSymbol("https://github.com/RJC32/RJC32.github.io/blob/master/icons/icons_Soon.png?raw=true"),
             label: "Closing Soon"
           }]
       };
@@ -815,9 +823,9 @@
       var reviews = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/survey123_25db605e5a174932b7745e02705e9691/FeatureServer/",
         layerId: 0,
-        //popupEnabled: false,
-        //listMode: "hide",
-        //visible : false,
+        popupEnabled: false,
+        listMode: "hide",
+        visible : false,
         title: "Review"
       });
 
@@ -861,7 +869,7 @@
       // Chicken
       var chickenHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Chicken/FeatureServer",
-        //id: "Symbol",
+        id: "Icon",
         definitionExpression: "Burger_Protien = 'Chicken'",
         layerId: 1,
         popupEnabled: false,
@@ -897,7 +905,7 @@
       // Duck
       var duckHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Duck/FeatureServer",
-        //id: "Symbol",
+        id: "Icon",
         definitionExpression: "Burger_Protien = 'Duck'",
         layerId: 1,
         popupEnabled: false,
@@ -935,7 +943,7 @@
       // Vege
       var vegeHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Vegetarian/FeatureServer",
-        //id: "Symbol",
+        id: "Icon",
         definitionExpression: "Burger_Protien = 'Vegetarian'",
         layerId: 1,
         popupEnabled: false,
@@ -971,7 +979,7 @@
 
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [/*reviews, vegeGroup, duckGroup, chickenGroup,*/beefGroup]
+        layers: [reviews, vegeGroup, duckGroup, chickenGroup, beefGroup]
       });
 
       var view = new MapView({
@@ -1013,6 +1021,8 @@
                  l.renderer.symbol.angle =  rotation;
 
                } else if(l.id ==='Icon') {
+
+                 console.log(l)
 
                    for (var n = 0; n < l.renderer.uniqueValueInfos.length; n++) {
                      var k = l.renderer.uniqueValueInfos[n];
@@ -1066,18 +1076,14 @@
           });
         }
 
-      function createSymbol(color) {
+      function createSymbol(StatusIcon) {
         return {
-          type: "simple-marker", // autocasts as new SimpleFillSymbol()
-          color: color,
-          outline: {
-            width: 1.5,
-            color: [0, 0, 0, 1]
-          },
-          xoffset: 12,
-          yoffset: 12,
-          angle: 0
-        };
+          type: "picture-marker",
+          url: StatusIcon,   // autocasts as new SimpleMarkerSymbol()
+          height: "50px",
+          width: "50px",
+          angle: 0,
+        }
       }
 
       // Create widgets
