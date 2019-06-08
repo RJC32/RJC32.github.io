@@ -744,28 +744,8 @@
             type: "fields",
             fieldInfos: [
               {
-                fieldName: "{expression/overall-arcade}",
+                fieldName: "expression/overall-arcade",
                 label: "Overall Review"
-              },
-              {
-                fieldName: "expression/value-arcade",
-                label: "Value"
-              },
-              {
-                fieldName: "expression/presentation-arcade",
-                label: "Presentation"
-              },
-              {
-                fieldName: "expression/service-arcade",
-                label: "Service"
-              },
-              {
-                fieldName: "expression/creativity-arcade",
-                label: "Creativity"
-              },
-              {
-                fieldName: "expression/pun-arcade",
-                label: "Pun"
               },
             ]
           },
@@ -802,7 +782,7 @@
       var rendererTemplate = {
         type: "unique-value",
         valueExpression: dayArcade,
-        valueExpressionTitle: "openTest",
+        valueExpressionTitle: "open-hours",
         uniqueValueInfos: [
           {
             value: "Open",
@@ -844,7 +824,7 @@
       // Beef
       var beefHours = new FeatureLayer({
         url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/Beef/FeatureServer",
-        //id: "Symbol",
+        id: "Icon",
         definitionExpression: "Burger_Protien = 'Beef'",
         layerId: 1,
         popupEnabled: false,
@@ -874,7 +854,7 @@
 
       var beefGroup = new GroupLayer({
         layers: [beefLocation, beefHours],
-        title: "Beef",
+        title: "Beef Group",
         listMode: "hide-children"
       });
 
@@ -991,7 +971,7 @@
 
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [reviews, vegeGroup, duckGroup, chickenGroup, beefGroup]
+        layers: [/*reviews, vegeGroup, duckGroup, chickenGroup,*/beefGroup]
       });
 
       var view = new MapView({
@@ -1023,24 +1003,30 @@
           } else {
             roti = 0;
           }
-          console.log("A "+ roti)
-          roti = 360 - roti;
-          console.log("B "+ roti)
+          rotation = 360 - roti;
           for (var i = 0; i < map.allLayers.items.length; i++) {
+
              var l = map.allLayers.items[i];
-             console.log(l)
-             //console.log(map.allLayers.items[i]);
              if(l){
                if(l.id ==='Symbol')
                {
-                 l.renderer.symbol.angle =  roti;
-                 //console.log(l)
-                 //console.log(l.renderer.uniqueValueInfos)//.uniqueValueInfos.symbol.angle = roti;
+                 l.renderer.symbol.angle =  rotation;
+
+               } else if(l.id ==='Icon') {
+
+                   for (var n = 0; n < l.renderer.uniqueValueInfos.length; n++) {
+                     var k = l.renderer.uniqueValueInfos[n];
+
+                     if(k){
+                       k.symbol.angle = rotation;
+                       console.log(k.symbol.angle)
+                     }
+                   };
                }
              }
-        }
-      });
-    }
+          }
+        });
+      }
 
       getRotate();
 
