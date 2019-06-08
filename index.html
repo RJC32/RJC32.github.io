@@ -661,11 +661,10 @@
       "esri/widgets/Expand",
       "esri/widgets/Search",
       "esri/layers/FeatureLayer",
-      "esri/widgets/Compass",
       "esri/core/watchUtils",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, Compass, watchUtils) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, watchUtils) {
 
 
       var date = new Date();
@@ -1180,7 +1179,7 @@
           minZoom: 8,
           maxZoom: 18,
           snapToZoom: true,
-          rotationEnabled: true,
+          rotationEnabled: false,
         },
       });
 
@@ -1276,10 +1275,6 @@
         }
       });
 
-      var compassWidget = new Compass({
-        view: view
-      });
-
       var searchWidget = new Search({
         view: view,
           popupOpenOnSelect: false,
@@ -1307,7 +1302,6 @@
       view.ui.add(homeBtn, "top-left");
       view.ui.add(locateBtn, "top-left");
       view.ui.add(bgExpand, "top-left");
-      view.ui.add(compassWidget, "bottom-left");
       view.ui.add(searchWidget, "top-right");
 
     });
