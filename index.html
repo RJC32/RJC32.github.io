@@ -14,13 +14,6 @@
       overflow: hidden;
     }
 
-    .esri-view-width-xlarge .esri-popup__main-container,
-    .esri-view-width-large .esri-popup__main-container,
-    .esri-view-width-medium .esri-popup__main-container
-    {
-      min-height: 600px !important;
-    }
-
   </style>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
@@ -849,15 +842,6 @@
           }]
       };
 
-      // Reviews
-      var reviews = new FeatureLayer({
-        url: "https://services1.arcgis.com/Ym9pldMfKjlrPyiP/arcgis/rest/services/survey123_25db605e5a174932b7745e02705e9691/FeatureServer/",
-        layerId: 0,
-        popupEnabled: false,
-        listMode: "hide",
-        visible : false,
-        title: "Review"
-      });
 
       var allLayers = "allLayers";
 
@@ -1198,7 +1182,7 @@
 
       var map = new Map({
         basemap: "streets-navigation-vector",
-        layers: [reviews, otherGroup, vegeGroup, sweetGroup, seafoodGroup, porkGroup, lambGroup, duckGroup, chickenGroup, beefGroup]
+        layers: [otherGroup, vegeGroup, sweetGroup, seafoodGroup, porkGroup, lambGroup, duckGroup, chickenGroup, beefGroup]
       });
 
       var view = new MapView({
@@ -1210,7 +1194,8 @@
         popup: {
           dockEnabled: true,
           dockOptions: {
-            buttonEnabled: true,
+            breakpoint: false,
+            buttonEnabled: false,
           }
         },
         constraints: {
