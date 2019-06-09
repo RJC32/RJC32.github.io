@@ -13,6 +13,11 @@
       width: 100%;
       overflow: hidden;
     }
+
+    .esri-popip__main-container.esri-widget {
+      max-height: 300px !important;
+    }
+
   </style>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
@@ -47,10 +52,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -88,10 +101,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -129,10 +150,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -170,10 +199,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -211,10 +248,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -252,10 +297,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -293,10 +346,18 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
@@ -353,15 +414,26 @@
             var time = Number(Text(hour) + Text(minute));
         }
 
-        if (open1 < time && time < close1){
-            var status = "Open";
-        } else if (open2 < time && time < close2){
-                       var status = "Open";
+        if (open1 < time && time < (close1-100)){
+            var status = "Open"
+
+        } else if ((close1-100) < time && time < close1){
+            var status = "Closing Soon"
+
+        } else if (open2 < time && time < (close2-100)){
+            var status = "Open"
+
+        } else if ((close2-100) < time && time < close2){
+            var status = "Closing Soon"
+
         } else {
             var status = "Closed";
         }
+
     }
     return status
+
+
   </script>
   <script type="text/plain" id="todays-hours-arcade">
     var cYear = Year(Now())
@@ -622,32 +694,6 @@
 
   </script>
 
-  <script type="text/plain" id="overall-arcade">
-
-    var reviews = FeatureSetByName($map,"Reviews");
-    var restaurants = Buffer($feature, 10, 'meters')
-
-    var allReviews = Intersects(reviews, restaurants);
-
-    var total = 0
-    var loop = 0
-
-    for (var review in allReviews){
-        total += Number(review.Burger);
-        loop += 1
-    }
-
-
-    if (loop > 3){
-    	var score = Round((total / loop),2);
-    } else {
-    	var score = "Not Enough Reviews";
-    }
-
-    return score
-
-  </script>
-
   <script>
     require([
 
@@ -712,12 +758,7 @@
           name: "survey-arcade",
           title: "Survey Arcade",
           expression: document.getElementById("survey-arcade").text
-        },
-        {
-          name: "overall-arcade",
-          title: "Overall Arcade",
-          expression: document.getElementById("overall-arcade").text
-        },
+        }
       ];
 
       var popupTemplate = {
@@ -750,7 +791,7 @@
           },
           {
             type: "text",
-            text: "<a href={expression/survey-arcade}>Submit a Review</a>"
+            text: "<a href={expression/survey-arcade}><b>Submit a Review</b></a>"
           },
           {
             type: "text",
@@ -799,16 +840,11 @@
             label: "Unknown"
           },
           {
-            value: "Soon",
+            value: "Closing Soon",
             symbol: createSymbol("#F89E36"),
             label: "Closing Soon"
           }]
       };
-
-      var symbol = {
-          type: "simple-marker",
-          color: "#ffff00",
-        };
 
       // Reviews
       var reviews = new FeatureLayer({
@@ -846,8 +882,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Beef.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -883,8 +919,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Chicken.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -920,8 +956,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Duck.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -957,8 +993,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Lamb.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -994,8 +1030,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Pork.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -1031,8 +1067,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Fish.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -1069,8 +1105,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Sweet.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -1107,8 +1143,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Vege.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -1144,8 +1180,8 @@
             symbol: {
               type: "picture-marker",
               url: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/Icons_Other.png?raw=true",   // autocasts as new SimpleMarkerSymbol()
-              height: "50px",
-              width: "50px",
+              height: "55px",
+              width: "55px",
               angle: 0,
               }
             }
@@ -1223,12 +1259,13 @@
         watchUtils.whenTrue(view, "stationary", function() {
           if (view.rotation) {
             view.rotation = 0
-            //alert("Unfortunately rotating this map will cause issues.\nPlease refrain from rotating this map.\nThank you for understanding!");
+            //alert("No Rotating.\nThank you!");
           }
         })
       }
 
       getRotate();
+
 
       function createSymbol(color) {
         return {
@@ -1238,8 +1275,8 @@
             width: 1.5,
             color: [0, 0, 0, 1]
           },
-          xoffset: 12,
-          yoffset: 12,
+          xoffset: 13.25,
+          yoffset: 13.25,
           angle: 0
         };
       }
