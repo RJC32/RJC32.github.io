@@ -14,8 +14,11 @@
       overflow: hidden;
     }
 
-    .esri-popip__main-container.esri-widget {
-      max-height: 300px !important;
+    .esri-view-width-xlarge .esri-popup__main-container,
+    .esri-view-width-large .esri-popup__main-container,
+    .esri-view-width-medium .esri-popup__main-container
+    {
+      min-height: 600px !important;
     }
 
   </style>
@@ -1207,8 +1210,7 @@
         popup: {
           dockEnabled: true,
           dockOptions: {
-            buttonEnabled: false,
-            breakpoint: false,
+            buttonEnabled: true,
           }
         },
         constraints: {
