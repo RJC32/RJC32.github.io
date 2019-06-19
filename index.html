@@ -1202,6 +1202,7 @@
         rotation: 0,
         popup: {
           dockEnabled: true,
+          actionsMenuEnabled: false,
           dockOptions: {
             breakpoint: false,
             buttonEnabled: false,
@@ -1262,13 +1263,15 @@
 
       getRotate();
 
+
       function getReview() {
         var attributes = view.popup.selectedFeature.attributes;
         var restaurant = attributes.Restaurant;
 
-        var surveyLink = "survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?&field:restaurant=" + restaurant;
-        var win = window.open(surveyLink, '_blank');
-        win.focus();
+        var surveyLink = "https://survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?&field:restaurant=" + restaurant;
+        console.log(surveyLink)
+        var win = window.open(surveyLink);
+        win.opener = null;
       };
 
       // Event handler that fires each time an action is clicked.
