@@ -700,13 +700,14 @@
       "esri/widgets/Home",
       "esri/widgets/Locate",
       "esri/widgets/LayerList",
+      "esri/widgets/Legend",
       "esri/widgets/Expand",
       "esri/widgets/Search",
       "esri/layers/FeatureLayer",
       "esri/core/watchUtils",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Expand, Search, FeatureLayer, watchUtils) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Legend, Expand, Search, FeatureLayer, watchUtils) {
 
 
       var date = new Date();
@@ -757,9 +758,17 @@
         }
       ];
 
+      var submitReview = {
+        title: "Submit Review",
+        id: "submit-review",
+        image:
+          "https://apprecs.org/gp/images/app-icons/300/92/com.esri.survey123.jpg"
+      };
+
       var popupTemplate = {
         title:  "{Burger}" + "<br>" +
                 "{Restaurant}",
+        actions: [submitReview],
         content: [
           {
             type: "text",
@@ -778,12 +787,12 @@
           },
           {
             type: "text",
-            text: "Overall Review: <b>{xOverall}</b> Stars" + "</br>" +
-                  "Value: <b>{xValue}</b> Stars" + "</br>" +
-                  "Presentation: <b>{xPresentation}</b> Stars" + "</br>" +
-                  "Service: <b>{xService}</b> Stars" + "</br>" +
-                  "Creativity: <b>{xCreativity}</b> Stars" + "</br>" +
-                  "Pun: <b>{xPun}</b> Stars"
+            text: "Overall Review: <b>{xOverall}</b>" + "</br>" +
+                  "Value: <b>{xValue}</b>" + "</br>" +
+                  "Presentation: <b>{xPresentation}</b>" + "</br>" +
+                  "Service: <b>{xService}</b>" + "</br>" +
+                  "Creativity: <b>{xCreativity}</b>" + "</br>" +
+                  "Pun: <b>{xPun}</b>"
           },
           {
             type: "text",
@@ -1253,6 +1262,23 @@
 
       getRotate();
 
+      function getReview() {
+        var attributes = view.popup.selectedFeature.attributes;
+        var restaurant = attributes.Restaurant;
+
+        var surveyLink = "survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?&field:restaurant=" + restaurant;
+        var win = window.open(surveyLink, '_blank');
+        win.focus();
+      };
+
+      // Event handler that fires each time an action is clicked.
+      view.popup.on("trigger-action", function(event) {
+        // Execute the measureThis() function if the measure-this action is clicked
+        if (event.action.id === "submit-review") {
+          getReview();
+        }
+      });
+
 
       function createSymbol(color) {
         return {
@@ -1298,6 +1324,57 @@
         }
       });
 
+      var legend = new Legend({
+        view: view,
+        layerInfos: [
+          {
+            layer: beefHours,
+            title: " "
+          },
+          {
+            layer: beefLocation,
+            title: "Beef"
+          },
+          {
+            layer: chickenLocation,
+            title: "Chicken"
+          },
+          {
+            layer: duckLocation,
+            title: "Duck"
+          },
+          {
+            layer: lambLocation,
+            title: "Lamb"
+          },
+          {
+            layer: porkLocation,
+            title: "Pork"
+          },
+          {
+            layer: seafoodLocation,
+            title: "Seafood"
+          },
+          {
+            layer: sweetLocation,
+            title: "Sweet"
+          },
+          {
+            layer: vegeLocation,
+            title: "Vegetarian"
+          },
+          {
+            layer: otherLocation,
+            title: "Other"
+          }
+        ]
+      });
+
+      var lgExpand = new Expand({
+        view: view,
+        content: legend,
+      });
+
       var searchWidget = new Search({
         view: view,
           popupOpenOnSelect: false,
@@ -1325,6 +1402,7 @@
       view.ui.add(homeBtn, "top-left");
       view.ui.add(locateBtn, "top-left");
       view.ui.add(bgExpand, "top-left");
+      view.ui.add(lgExpand, "top-left");
       view.ui.add(searchWidget, "top-right");
 
     });
