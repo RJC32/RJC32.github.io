@@ -34,6 +34,37 @@
       display: none !important;
     }
 
+    #infoDiv {
+
+      width:400px;
+      height:400px;
+      display:inline-block;
+
+      padding:15px;
+      margin: 0;
+
+      background-color: rgba(250,250,250,1);
+      font-family: 'Roboto', serif;
+
+    }
+
+    .esri-view-width-less-than-large .esri-popup__action-text {
+      display: block !important;
+    }
+
+    .esri-expand__container--expanded {
+      background: rgba(250,250,250,1) !important;
+    }
+
+    .esri-expand__mask--expanded {
+      background-color: rgba(250,250,250,1) !important;
+      opacity: 1 !important;
+    }
+
+    .esri-expand__content {
+      opacity: 1 !important;
+    }
+
   </style>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
@@ -710,11 +741,12 @@
       "esri/widgets/Legend",
       "esri/widgets/Expand",
       "esri/widgets/Search",
+      "esri/widgets/Zoom",
       "esri/layers/FeatureLayer",
       "esri/core/watchUtils",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Legend, Expand, Search, FeatureLayer, watchUtils, dom) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Legend, Expand, Search, Zoom, FeatureLayer, watchUtils, dom) {
 
 
       var date = new Date();
@@ -761,10 +793,10 @@
       ];
 
       var submitReview = {
-        title: "Submit Review",
+        title: "Review Burger",
         id: "submit-review",
-        image:
-          "https://github.com/RJC32/RJC32.github.io/blob/master/icons/1966420-200.png?raw=true",
+        //image: "https://github.com/RJC32/RJC32.github.io/blob/master/icons/1966420-200.png?raw=true",
+        className: "esri-icon-favorites",
       };
 
       var popupTemplate = {
@@ -1194,6 +1226,9 @@
         center: [175.2, -41.1],
         scale: 1000000,
         rotation: 0,
+        ui: {
+          components: []
+        },
         popup: {
           dockEnabled: true,
           actionsMenuEnabled: false,
@@ -1321,9 +1356,9 @@
         view: view
       });
 
-      var bgExpand = new Expand({
+      var lyExpand = new Expand({
         view: view,
-        content: layerList
+        content: layerList,
       });
 
       layerList.watch("activeLayer", function() {
@@ -1379,12 +1414,13 @@
             layer: otherLocation,
             title: "Other"
           }
-        ]
+        ],
       });
 
       var lgExpand = new Expand({
+        expandIconClass: "esri-icon-description",
         view: view,
-        content: legend,
+        content: infoDiv,
       });
 
       var searchWidget = new Search({
@@ -1411,11 +1447,17 @@
         }]
       });
 
-      view.ui.add(homeBtn, "top-left");
-      view.ui.add(locateBtn, "top-left");
-      view.ui.add(bgExpand, "top-left");
-      view.ui.add(lgExpand, "top-left");
+      var zoom = new Zoom({
+        view: view
+      });
+
       view.ui.add(searchWidget, "top-right");
+      view.ui.add(homeBtn, "top-left");
+      view.ui.add(zoom, "top-left");
+      view.ui.add(locateBtn, "top-left");
+      view.ui.add(lyExpand, "top-left");
+      view.ui.add(lgExpand, "top-left");
+      view.ui.add(infoDiv, "bottom-left")
 
     });
   </script>
@@ -1427,5 +1469,8 @@
   </div>
 
   <div id="viewDiv"></div>
+
+  <div id="infoDiv">Hello World</div>
+
 </body>
 </html>
