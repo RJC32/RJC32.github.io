@@ -14,6 +14,18 @@
       overflow: hidden;
     }
 
+    #loadDiv {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      background-color: rgba(150,150,150,1)
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
   </style>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
@@ -707,7 +719,7 @@
       "esri/core/watchUtils",
       "dojo/domReady!",
 
-    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Legend, Expand, Search, FeatureLayer, watchUtils) {
+    ], function(Map, MapView, Layer, GroupLayer, Home, Locate, LayerList, Legend, Expand, Search, FeatureLayer, watchUtils, dom) {
 
 
       var date = new Date();
@@ -762,7 +774,7 @@
         title: "Submit Review",
         id: "submit-review",
         image:
-          "https://apprecs.org/gp/images/app-icons/300/92/com.esri.survey123.jpg"
+          "http://aux2.iconspalace.com/uploads/star-icon-256-441674523.png"
       };
 
       var popupTemplate = {
@@ -1282,6 +1294,19 @@
       });
 
 
+      function hide(div) {
+        var hideDIV = document.getElementById(div);
+        hideDIV.classList.add('hidden');
+      };
+
+      var loadLayer = view.map.layers.getItemAt(8)
+
+      // Hide the loading indicator when the view stops updating
+      watchUtils.whenTrue(loadLayer, "loaded", function(evt) {
+        setTimeout(function() {hide("loadDiv")} ,3000);
+      });
+
+
       function createSymbol(color) {
         return {
           type: "simple-marker", // autocasts as new SimpleFillSymbol()
@@ -1411,6 +1436,9 @@
   </script>
 </head>
 <body>
+  <div id="loadDiv">
+    <img id='loading' src="https://i.stack.imgur.com/qq8AE.gif"/>
+  </div>
   <div id="viewDiv"></div>
 </body>
 </html>
