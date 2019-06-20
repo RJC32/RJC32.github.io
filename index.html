@@ -696,19 +696,6 @@
     return PB;
 
   </script>
-  <script type="text/plain" id="survey-arcade">
-
-    var http = "https://"
-    var share = "survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?hide=field:location,field:actual"
-    var actual = "&field:actual=" + Replace($feature["Restaurant"], ' ', '%20')
-    var restaurant = "&field:restaurant=" + Replace($feature["Restaurant"], ' ', '%20')
-    var burger = "&field:burger=" + Replace($feature["Burger"], ' ', '%20')
-    var center = "&center=" + $feature["Latitude"] + "," + $feature["Longitude"]
-
-    var Survey = Concatenate([http,share,actual,restaurant,burger,center])
-    return Survey;
-
-  </script>
 
   <script>
     require([
@@ -770,11 +757,6 @@
           name: "beer-match-arcade",
           title: "Beer Match",
           expression: document.getElementById("beer-match-arcade").text
-        },
-        {
-          name: "survey-arcade",
-          title: "Survey Arcade",
-          expression: document.getElementById("survey-arcade").text
         }
       ];
 
@@ -813,10 +795,6 @@
                   "Service: <b>{xService}</b>" + "</br>" +
                   "Creativity: <b>{xCreativity}</b>" + "</br>" +
                   "Pun: <b>{xPun}</b>"
-          },
-          {
-            type: "text",
-            text: "<a href={expression/survey-arcade}><b>Submit a Review</b></a>"
           },
           {
             type: "text",
@@ -1286,9 +1264,13 @@
 
       function getReview() {
         var attributes = view.popup.selectedFeature.attributes;
+        var actual = attributes.Actual;
         var restaurant = attributes.Restaurant;
+        var burger = attributes.Burger;
+        var lat = attributes.Latitude
+        var lng = attributes.Longitude
 
-        var surveyLink = "https://survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?&field:restaurant=" + restaurant;
+        var surveyLink = "https://" + "survey123.arcgis.com/share/25db605e5a174932b7745e02705e9691?hide=field:location,field:actual" + "&field:restaurant=" + restaurant + "&field:burger=" + burger + "&center=" + lat + "," + lng
         var win = window.open(surveyLink);
         win.opener = null;
       };
