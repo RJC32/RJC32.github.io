@@ -19,7 +19,15 @@
       height: 100%;
       width: 100%;
       z-index: 2;
-      background-color: rgba(51,51,51,1)
+      background-color: rgba(51,51,51,1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #loading {
+      height: 50%;
+      width: 25%;
     }
 
     .hidden {
@@ -1303,7 +1311,7 @@
 
       // Hide the loading indicator when the view stops updating
       watchUtils.whenTrue(loadLayer, "loaded", function(evt) {
-        setTimeout(function() {hide("loadDiv")} ,3000);
+        setTimeout(function() {hide("loadDiv")} ,3500);
       });
 
       function createSymbol(color) {
@@ -1435,9 +1443,11 @@
   </script>
 </head>
 <body>
+
   <div id="loadDiv">
     <img id='loading' src="https://media.giphy.com/media/WBTUlyKBVlTTa/giphy.gif"/>
   </div>
+
   <div id="viewDiv"></div>
 </body>
 </html>
