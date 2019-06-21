@@ -40,12 +40,87 @@
       height:500px;
       display:inline-block;
 
-      padding:15px;
+      padding:7px;
       margin: 0;
 
       background-color: rgba(250,250,250,1);
-      font-family: 'Roboto', serif;
+      font-family: 'Trebuchet MS', serif;
+    }
 
+    #infoTitle {
+
+      width:100%;
+      height:40px;
+      display:inline-block;
+
+      padding:5px;
+      margin: 0;
+      border-bottom: 1px solid rgba(200,200,200,1);
+      box-shadow: 0px 1px 3px rgba(50,50,50,0.2);
+      background-color: rgba(255,255,255,1);
+      font-family: 'Trebuchet MS', serif;
+
+      text-align: center;
+      vertical-align: middle;
+      line-height: 32px;
+      font-weight: 400;
+
+    }
+
+    #infoKey {
+
+      width:100%;
+      height:350px;
+      display:inline-block;
+
+      padding:5px;
+      margin: 0;
+      margin-top: 5px;
+      border-bottom: 1px solid rgba(200,200,200,1);
+      box-shadow: 0px 1px 3px rgba(50,50,50,0.2);
+      background-color: rgba(255,255,255,1);
+
+    }
+
+    #infoDetails {
+
+      width:100%;
+      height:32px;
+      display:inline-block;
+
+      padding:5px;
+      margin: 0;
+      margin-top: 5px;
+      border-bottom: 1px solid rgba(200,200,200,1);
+      box-shadow: 0px 1px 3px rgba(50,50,50,0.2);
+      background-color: rgba(255,255,255,1);
+      font-family: 'Trebuchet MS', serif;
+      font-size: 10;
+
+      text-align: center;
+      vertical-align: middle;
+      line-height: 20px;
+    }
+
+    #infoCredits {
+
+      width:100%;
+      height:50px;
+      display:inline-block;
+
+      padding:5px;
+      margin: 0;
+      margin-top: 5px;
+      border-bottom: 1px solid rgba(200,200,200,1);
+      box-shadow: 0px 1px 3px rgba(50,50,50,0.2);
+      background-color: rgba(255,255,255,1);
+      font-family: 'Trebuchet MS', serif;
+      font-size: 9;
+      font-style: italic;
+      color: rgba(50,50,50,0.9);
+
+      text-align: center;
+      vertical-align: middle;
     }
 
     .esri-view-width-less-than-large .esri-popup__action-text {
@@ -1311,7 +1386,7 @@
 
       // Hide the loading indicator when the view stops updating
       watchUtils.whenTrue(loadLayer, "loaded", function(evt) {
-        setTimeout(function() {hide("loadDiv")} ,3500);
+        setTimeout(function() {hide("loadDiv")} ,1); //3500
       });
 
       function createSymbol(color) {
@@ -1457,7 +1532,12 @@
 
   <div id="viewDiv"></div>
 
-  <div id="infoDiv">Hello World</div>
+  <div id="infoDiv">
+    <div id="infoTitle">Burger Wellington Map 2019</div>
+    <img id="infoKey" src="https://www.landscapephotographyiq.com/wp-content/uploads/2017/07/summerlandscapephotography3.jpg"></img>
+    <a id="infoDetails" href="https://spt-eaglegis.maps.arcgis.com/apps/opsdashboard/index.html#/c283e565e9ac426d9ffa5f1676758dc4" target="_blank">Burger Dashboard</a>
+    <div id="infoCredits">Made by: Ryan Cooper <br> Using Esri Technology</div>
+  </div>
 
 </body>
 </html>
