@@ -36,12 +36,13 @@
 
     #infoDiv {
 
-      width:300px;
-      height:500px;
+      width:350px;
+      height:537px;
       display:inline-block;
 
       padding:7px;
       margin: 0;
+      box-shadow: 2px 2px 4px rgba(50,50,50,0.2);
 
       background-color: rgba(250,250,250,1);
       font-family: 'Trebuchet MS', serif;
@@ -125,6 +126,22 @@
 
     .esri-view-width-less-than-large .esri-popup__action-text {
       display: block !important;
+    }
+
+    .esri-popup__main-container {
+      max-height: 100% !important;
+    }
+
+    .esri-view-width-xsmall .esri-popup__main-container {
+      max-height: 400px !important;
+    }
+
+    .esri-view-width-xsmall .esri-popup__actions {
+      border-top: 1px solid rgba(200,200,200,1);
+    }
+
+    .esri-ui .esri-popup {
+      margin-top: 60px;
     }
 
   </style>
@@ -1485,6 +1502,34 @@
         content: infoDiv,
       });
 
+      expandHandle1 = watchUtils.pausable(lyExpand, "expanded", function(newValue, oldValue){
+        if(newValue === true){
+          expandHandle1.pause();
+          setTimeout(function(){
+            expandHandle2.resume();
+          }, 100);
+        }else{
+          expandHandle1.resume();
+        }
+        if(lgExpand.expanded){
+          lgExpand.collapse();
+        }
+      });
+
+      expandHandle2 = watchUtils.pausable(lgExpand, "expanded", function(newValue, oldValue){
+        if(newValue === true){
+          expandHandle2.pause();
+          setTimeout(function(){
+            expandHandle1.resume();
+          }, 100);
+        }else{
+          expandHandle2.resume();
+        }
+        if(lyExpand.expanded){
+          lyExpand.collapse();
+        }
+      });
+
       var searchWidget = new Search({
         view: view,
           popupOpenOnSelect: false,
@@ -1517,9 +1562,8 @@
       view.ui.add(homeBtn, "top-left");
       view.ui.add(zoom, "top-left");
       view.ui.add(locateBtn, "top-left");
-      view.ui.add(lyExpand, "top-left");
       view.ui.add(lgExpand, "top-left");
-      view.ui.add(infoDiv, "bottom-left")
+      view.ui.add(lyExpand, "top-left");
 
     });
   </script>
@@ -1536,6 +1580,7 @@
     <div id="infoTitle">Burger Wellington Map 2019</div>
     <img id="infoKey" src="https://www.landscapephotographyiq.com/wp-content/uploads/2017/07/summerlandscapephotography3.jpg"></img>
     <a id="infoDetails" href="https://spt-eaglegis.maps.arcgis.com/apps/opsdashboard/index.html#/c283e565e9ac426d9ffa5f1676758dc4" target="_blank">Burger Dashboard</a>
+    <a id="infoDetails" href="https://survey123.arcgis.com/share/90eb74cbb7d0499e95885d73d9f9410f" target="_blank">Submit Feedback</a>
     <div id="infoCredits">Made by: Ryan Cooper <br> Using Esri Technology</div>
   </div>
 
