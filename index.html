@@ -1403,7 +1403,7 @@
 
       // Hide the loading indicator when the view stops updating
       watchUtils.whenTrue(loadLayer, "loaded", function(evt) {
-        setTimeout(function() {hide("loadDiv")} ,1); //3500
+        setTimeout(function() {hide("loadDiv")} ,3500); //3500
       });
 
       function createSymbol(color) {
@@ -1548,8 +1548,9 @@
           zoomScale: 3200,
           resultSymbol: {
              type: "simple-marker",  // autocasts as new PictureMarkerSymbol()
-             size: 28,
-             outline: { width: 3.5, color: [50, 50, 50, 1] }
+             size: 30,
+             color: [50, 50, 50, 0],
+             outline: { width: 6, color: [50, 50, 50, 1] }
           },
         }]
       });
