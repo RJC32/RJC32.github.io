@@ -1,5 +1,5 @@
-var lat = parseFloat('116.39126329999999');
-var lng = parseFloat('39.9130967');
+var lat = parseFloat('39.9130967');
+var lng = parseFloat('116.39126329999999');
 
 function initialize() {
 

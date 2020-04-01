@@ -2,19 +2,80 @@
 <html>
   <head>
     <meta charset="utf-8">
+
     <title>test</title>
-      <link rel="stylesheet" type="text/css" href="https://github.com/RJC32/RJC32.github.io/blob/master/view.css" />
+
+    <style>
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      html * {
+        font-family: 'Roboto', serif;
+      }
+
+      .gm-style-cc {
+          display:none;
+      }
+
+      #view {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+      }
+
+    </style>
+
     </head>
 
   <body>
 
     <div id = "view"></div>
 
-    <script type="text/javascript" src="https://github.com/RJC32/RJC32.github.io/blob/master/view.js"></script>
+    <script>
+
+      var lat = parseFloat('39.9130967');
+      var lng = parseFloat('116.39126329999999');
+
+      function initialize() {
+
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('view'), {
+              position: {lat: lat, lng: lng},
+              pov: {
+                heading: 0,
+                pitch: 0
+              },
+              addressControl: false,
+              showRoadLabels: false,
+              linksControl: false,
+              zoomControl: false,
+              fullscreenControl: false,
+              disableDefaultUI: true,
+              clickToGo: false,
+            });
+
+          // Set up the markers on the map
+          var cafeMarker = new google.maps.Marker({
+              position: {lat: 39.9130967, lng: 116.39126329999999},
+              map: map,
+              icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00',
+              title: 'Cafe'
+          });
+
+      }
+
+    </script>
+
     <!--
       Using the Google Account: teddisonteddy
       Using the GitHub Account:
     -->
+
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKXSboy095HBb0wXzDxsJc_XfODEJRt9A&callback=initialize">
     </script>
