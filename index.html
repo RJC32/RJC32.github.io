@@ -1,84 +1,68 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
 
-    <title>test</title>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+
+    <title>
+        NT 100
+    </title>
 
     <style>
 
-      html, body {
-        height: 100%;
-        margin: 0;
+    html,
+    body,
+    #viewDiv {
         padding: 0;
-      }
-
-      html * {
-        font-family: 'Roboto', serif;
-      }
-
-      .gm-style-cc {
-          display:none;
-      }
-
-      #view {
-        position: absolute;
+        margin: 0;
         height: 100%;
         width: 100%;
-        z-index: 1;
-      }
+    }
 
     </style>
 
-    </head>
-
-  <body>
-
-    <div id = "view"></div>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css"/>
+    <script src="https://js.arcgis.com/4.22/"></script>
 
     <script>
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/FeatureLayer"
+        ], (Map, MapView, FeatureLayer) => {
 
-      var lat = parseFloat('39.9130967');
-      var lng = parseFloat('116.39126329999999');
+            const locations = new FeatureLayer({
+                url: "https://services3.arcgis.com/fquRSvLqAEnt4dIs/arcgis/rest/services/locations/FeatureServer/0",
+                outFields: ["*"],
+                title: "Locations",
+                renderer: {
+                    type: "simple",
+                    symbol: {
+                        type: "picture-marker",
+                        url: "https://e7.pngegg.com/pngimages/706/685/png-clipart-trees-trees-trees-clipart.png",
+                        width: "64px",
+                        height: "64px"
+                    }
+                }
+            })
 
-      function initialize() {
-
-        var panorama = new google.maps.StreetViewPanorama(
-            document.getElementById('view'), {
-              position: {lat: lat, lng: lng},
-              pov: {
-                heading: 0,
-                pitch: 0
-              },
-              addressControl: false,
-              showRoadLabels: false,
-              linksControl: false,
-              zoomControl: false,
-              fullscreenControl: false,
-              disableDefaultUI: true,
-              clickToGo: false,
+            const map = new Map({
+                basemap: "topo-vector",
+                layers: [locations]
             });
 
-          // Set up the markers on the map
-          var cafeMarker = new google.maps.Marker({
-              position: {lat: 39.9130967, lng: 116.39126329999999},
-              map: map,
-              icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00',
-              title: 'Cafe'
-          });
-
-      }
-
+            const view = new MapView({
+                container: "viewDiv",
+                map: map,
+                zoom: 10,
+                center: [173, -41] // longitude, latitude
+            });
+        });
     </script>
+</head>
 
-    <!--
-      Using the Google Account: teddisonteddy
-      Using the GitHub Account:
-    -->
+<body>
+    <div id="viewDiv"></div>
+</body>
 
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKXSboy095HBb0wXzDxsJc_XfODEJRt9A&callback=initialize">
-    </script>
-
-  </body>
 </html>
