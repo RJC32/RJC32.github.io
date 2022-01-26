@@ -19,6 +19,12 @@
         width: 100%;
     }
 
+    .esri-popup__main-container {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+
     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css"/>
@@ -35,13 +41,18 @@
                 url: "https://services3.arcgis.com/fquRSvLqAEnt4dIs/arcgis/rest/services/locations/FeatureServer/0",
                 outFields: ["*"],
                 title: "Locations",
+                popupTemplate: {
+                    title: "test",
+                    overwriteActions: true,
+                    content: '<video width="250" height="250" controls><source src=https://scontent.cdninstagram.com/v/t50.2886-16/271426610_639208384176763_2090282839283500109_n.mp4?_nc_ht=instagram.fpmr1-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=2b_Sf_eHthYAX_Qx8VP&edm=APfKNqwBAAAA&ccb=7-4&oe=61F22FCD&oh=00_AT-v0p8tayoEG-CsMB1jPOOppcbGrjfjWqBCpDuIAwURiQ&_nc_sid=74f7ba type=video/mp4></video>'
+                },
                 renderer: {
                     type: "simple",
                     symbol: {
                         type: "picture-marker",
-                        url: "https://e7.pngegg.com/pngimages/706/685/png-clipart-trees-trees-trees-clipart.png",
-                        width: "64px",
-                        height: "64px"
+                        url: "https://raw.githubusercontent.com/RJC32/RJC32.github.io/master/test.png",
+                        width: "247px",
+                        height: "440px"
                     }
                 }
             })
@@ -55,8 +66,36 @@
                 container: "viewDiv",
                 map: map,
                 zoom: 10,
-                center: [173, -41] // longitude, latitude
+                center: [173, -41],
+                popup: {
+                    dockEnabled: true,
+                    dockOptions: {
+                        buttonEnabled: false,
+                        breakpoint: false
+                    }
+                }
             });
+
+            const popup = view.popup;
+            popup.visibleElements = {
+                featureNavigation: false
+
+            };
+            console.log(popup.visibleElements)
+
+            view.on("click", function (event) {
+
+                var screenPoint = {x: event.x, y: event.y};
+                view.hitTest(screenPoint).then(function (response) {
+
+                    response.results.forEach(function (result, index) {
+                        if (result.graphic.layer.type == "feature") {
+                            console.log(response.results[index])
+                        }
+                    });
+                })
+            });
+
         });
     </script>
 </head>
